@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Charrat</title>
+    <link rel="stylesheet" href="/css/index.css" />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.3.0/luxon.min.js"
+      integrity="sha512-2j5fkjQ4q5ceXgfxi+kqrU2Oz234MrpyywZsQz1F5OGnfat7mOhjRr0oz5cpQ+YwwWB+hhDBSyxNGuL/tKWMFw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js"
+      integrity="sha512-Lii3WMtgA0C0qmmkdCpsG0Gjr6M0ajRyQRQSbTF6BsrVh/nhZdHpVZ76iMIPvQwz1eoXC3DmAg9K51qT5/dEVg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@0.2.1"></script>
+
+    <script
+      src="scripts/extention-chartjs-chart-finacial.js"
+      type="text/javascript"
+    ></script>
+  </head>
+  <body>
+    <nav class="nav">
+      <h1 text="align-center">tity</h1>
+    </nav>
+    <span></span>
+    <header>
+      <section class="splitSec">
+        <div class="inputDiv">
+          <label for="">Aksje</label>
+          <select onchange="vis_aksje()" name="" id="selStock">
+            <option value="NDX">NDX</option>
+          </select>
+        </div>
+        <div class="inputDiv">
+          <label for="">Intervall</label>
+          <select onchange="vis_aksje()" name="" id="intervall">
+            <option value="1day">day</option>
+            <option value="1min">min</option>
+            <option value="1week">week</option>
+          </select>
+        </div>
+      </section>
+      <section class="splitSec">
+        <div class="inputDiv">
+          <label for="">Fra</label
+          ><input
+            onchange="vis_aksje()"
+            value="2021-09-14"
+            id="startDato"
+            type="date"
+          />
+          <!-- <label for="">Fra</label><input onchange="vis_aksje()" value="2021-11-09" id="startDato" type="date"> -->
+          <!-- <label for="">Fra</label><input onchange="vis_aksje()" value="2022-06-01" id="startDato" type="date"> -->
+          <!-- <label for="">Fra</label><input onchange="vis_aksje()" value="1998-01-01" id="startDato" type="date"> -->
+        </div>
+        <div class="inputDiv">
+          <!-- <label for="">Til </label><input onchange="vis_aksje()" value="2021-11-09" id="sluttDato" type="date"> -->
+          <label for="">Til </label
+          ><input
+            onchange="vis_aksje()"
+            value="2022-12-25"
+            id="sluttDato"
+            type="date"
+          />
+        </div>
+      </section>
+      <!-- <section>
+              <button onclick="{vis_aksje()}" class="button" id="ChartIT">GoGo</button>
+          </section> -->
+      <section class="splitSec" id="sec_input_btn">
+        <div>
+          <input type="number" id="ema_num" value="100" />
+          <button onclick="vis_EMA()">EMA</button>
+        </div>
+        <div>
+          <input type="number" id="bands_num" value="20" />
+          <button onclick="vis_bands()">BB</button>
+        </div>
+        <div>
+          <select name="comapre" id="compare"></select>
+          <button onclick="comapre_stock()">Compare</button>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section id="frameCanvas">
+        <section id="secCanvas"></section>
+      </section>
+      <section id="secRes" class="splitSec strats">
+        <p>-</p>
+      </section>
+
+      <section id="algoInput">
+        <!-- <h3>Algoritmer</h3> -->
+        <section id="secStrategier" class="splitSec strats">
+          <button onclick="vis_index_trad(false, false)">Index Trad</button>
+          <button onclick="vis_mine_transaksjoner()">Mine transaksjoner</button>
+          <button
+            onclick="vis_index_trad_multi(trending_comparison, 'NDX', picker_strats, picker_days)"
+          >
+            Trad trending stock
+          </button>
+
+          <button onclick="vis_index_trad(true, true)">Index Daytrad</button>
+          <button onclick="vis_smart_algo()">Daytrad</button>
+          <!-- <button onclick="vis_index_daytrad(false)">Index Daytrad</button> -->
+          <!-- <button onclick="vis_index_trad()">index daytrad</button> -->
+        </section>
+
+        <!-- </section>
+              <section>
+                  <ol>
+                      <li>
+                          <p>Hvis aksjen faller med <span><input placeholder='1' id="inpStoploss" value="1" type="number"></span> prosent på under <span><input type="number" id="inpFalltid" placeholder="1" value="1" name="" id=""></span> dager, sell sell sell!</p>
+                      </li>
+                      <li>
+                          <p>Etter aksjen er solgt, vent <span><input id="inpCooldown" placeholder='0' value="0" type="number"></span> dager og gjør ingenting.</p>
+                      </li>
+                      <li>
+                          <p>Hvis akjsen har steget med <span><input id="inpBuyback" placeholder='0' value="0" type="number"></span> prosent over <span><input id="inpStigetid" type="number" placeholder='1' value="1" name="" id=""></span> dager, INVEST!</p>
+                      </li>
+                  </ol>
+              </section>
+              <section class="center">
+                  <button class='button' onclick="lagAlgoritme()">Test strategi!</button>
+              </section> -->
+      </section>
+    </main>
+    <footer></footer>
+  </body>
+  <script src="scripts/strategier.js"></script>
+  <script src="scripts/globalefunksjoner.js"></script>
+  <script src="scripts/get_data.js"></script>
+  <script src="scripts/algo.js"></script>
+
+  <script src="scripts/kombinatorikk.js"></script>
+  <script src="scripts/xtest.js"></script>
+  <script src="scripts/html.js"></script>
+
+  <script src="scripts/localChart.js"></script>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "creamie",
+  "version": "1.0.0",
+  "description": "Stocks, \"local\" API",
+  "main": "data copy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thorcc/creamie.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thorcc/creamie/issues"
+  },
+  "homepage": "https://github.com/thorcc/creamie#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "node-fetch": "^2.6.6",
+    "prompt-sync": "^4.2.0"
+  }
+}
