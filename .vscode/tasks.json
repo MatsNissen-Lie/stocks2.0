@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+		  "label": "Run node data.js on startup",
+		  "type": "shell",
+		  "command": "node ./scripts/data.js",
+		  "windows": {
+			"command": "node ./scripts/data.js"
+		  },
+		  "presentation": {
+			"reveal": "always",
+			"panel": "new"
+		  },
+		  "runOptions": { "runOn": "folderOpen" }
+		}
+	  ]
+}

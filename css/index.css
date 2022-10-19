@@ -1,0 +1,131 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.nav {
+  margin-top: 0;
+  width: 100%;
+  height: 10vh;
+  /* background-color: #181c24; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav h1 {
+  text-align: center;
+  /* color: #1b56b5; */
+  font-size: 40px;
+  padding: 0;
+  margin: 0;
+}
+header {
+  width: 100vw;
+  text-align: center;
+  margin-top: 3vh;
+}
+main {
+  width: 90%;
+  margin: auto;
+  min-width: fit-content;
+  max-width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/*inputs*/
+.splitSec {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 5px;
+  width: 80%;
+  margin: auto;
+  margin-bottom: 5px;
+  text-align: left;
+}
+.inputDiv {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  width: 270px;
+}
+/*lik lengde på input*/
+.inputDiv input {
+  width: 200px;
+  padding: 0;
+}
+.inputDiv select {
+  width: 204px;
+}
+#sec_input_btn button {
+  width: 70px;
+  margin-top: 5vh;
+}
+#sec_input_btn button,
+#sec_input_btn input,
+#sec_input_btn select {
+  width: 70px;
+}
+#ChartIT {
+  margin: 1rem;
+  font-size: 1rem;
+}
+.button {
+  margin: 1rem;
+  font-size: 1rem;
+}
+/*main*/
+#frameCanvas {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+#secCanvas,
+#chart {
+  /* width: 100%; */
+  /* width: 900px; */
+  width: 900px;
+}
+@media only screen and (min-width: 1200px) {
+  #secCanvas,
+  #chart {
+    width: 1200px;
+  }
+}
+@media only screen and (min-width: 1400px) {
+  #secCanvas,
+  #chart {
+    width: 1400px;
+  }
+}
+#secCanvas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*algo input*/
+h3 {
+  text-align: center;
+}
+#algoInput input {
+  width: 40px;
+  text-align: right;
+}
+.strats {
+  margin-bottom: 2rem;
+}
+ol {
+  width: fit-content;
+  padding: 0 40px;
+  margin: auto;
+}
+#secRes {
+  text-align: center;
+}
+
+footer {
+  height: 10vh;
+}
