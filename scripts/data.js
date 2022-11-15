@@ -524,6 +524,8 @@ const kjørrr = async () => {
   // const new_data_found = await get_historical_data(focuz, '1day', '2007-01-01')
   // const new_data_found = await get_historical_data(focuz, '1week', '2006-01-01')
   //   const new_data_found = await get_historical_data(focuz, "1min", "2020-03-25");
+  const ask = prompt("Korriger stockSplit? y/n");
+  if( ask !== "y") return;
   const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
   // checkForStockSplit(api_data, valgte_intervaller);
 
