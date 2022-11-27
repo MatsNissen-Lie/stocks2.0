@@ -111,6 +111,7 @@ const get_stored_keys = () => {
   }
   return files;
 };
+
 const retrieveData = (symboler = [], intervaller) => {
   if (symboler.length === 0) symboler = get_stored_keys();
   console.log("Henter data fra filer for", symboler);
@@ -525,7 +526,7 @@ const kjørrr = async () => {
   // const new_data_found = await get_historical_data(focuz, '1week', '2006-01-01')
   //   const new_data_found = await get_historical_data(focuz, "1min", "2020-03-25");
   const ask = prompt("Press enter to get new data? y/n");
-  if( ask !== "" && ask !== "y") return;
+  if (ask !== "" && ask !== "y") return;
   const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
   // checkForStockSplit(api_data, valgte_intervaller);
 

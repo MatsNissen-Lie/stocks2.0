@@ -73,6 +73,7 @@ const vis_bands = (new_chart = true) => {
     BB_datasets(bollingerArr, num);
   }
   if (new_chart) makeChart();
+  console.log(chart_data.values);
 };
 
 const vis_treding_stock_portfolio = async (symboler, n, SD_vekting) => {
@@ -524,6 +525,7 @@ const tomorrow = async () => {
 const initialize = async () => {
   await vis_aksje();
   await tomorrow();
+  calcualteRsi(chart_data.values, chart_data.meta.index);
   vis_resultater(chart_data.values, chart_data.values, chart_data.meta.index);
   // await vis_algo()
   await vis_index_trad();
