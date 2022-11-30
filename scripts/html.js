@@ -525,7 +525,17 @@ const tomorrow = async () => {
 const initialize = async () => {
   await vis_aksje();
   await tomorrow();
-  calcualteRsi(chart_data.values, chart_data.meta.index);
+  addRsi(chart_data.values, chart_data.meta.index + 16);
+  // console.log(
+  //   chart_data.values[chart_data.meta.index + 17].rsi,
+  //   chart_data.values[chart_data.meta.index + 17].datetime,
+  //   "45.5"
+  // );
+  // for (let i = chart_data.meta.index; i < chart_data.meta.index + 10; i++) {
+  //   const ele = chart_data.values[i];
+  //   console.log(ele.rsi, ele.datetime);
+  // }
+
   vis_resultater(chart_data.values, chart_data.values, chart_data.meta.index);
   // await vis_algo()
   await vis_index_trad();
