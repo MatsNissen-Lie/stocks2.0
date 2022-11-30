@@ -1,4 +1,25 @@
-const calcualteRsi = (data_arr, index) => {
+const sma = (data_arr, index, length) => {
+  //punkt int
+  const data = data_arr.slice(index - length + 1, index + 1);
+  console.log(data);
+  return data.map((ele) => ele.close).reduce((a, b) => a + b, 0) / length;
+};
+
+const rma = (data_arr, index, length) => {
+  //add rma to array
+  const a = 1 / length;
+  let sum = [sma(data_arr, index, length)];
+  for (i = 1 + index; i < data.length; i++) {
+    const preVal = sum.slice(-1)[0];
+    sum.push(a * data[i].close + (1 - a) * preVal);
+  }
+  // console.log("avg", sum);
+  return sum.slice(-1)[0];
+};
+
+//setg 1 summen/avg
+
+const calcualteRSI = (data_arr, index) => {
   const n = 14;
   const data = data_arr.slice(index - n, index + 1); //henter 15 dager så jeg kan regne ut endring på 14 av dem.
   const change = data
@@ -8,25 +29,47 @@ const calcualteRsi = (data_arr, index) => {
       return { close: ele.close - array[index - 1].close, datetime };
     })
     .slice(1, data.length);
-  const changeUp = change.map(({ datetime, close }) => {
+
+  const gain = change.map(({ datetime, close }) => {
     if (close > 0) return { datetime, close };
     return { datetime, close: 0 };
   });
-  const changeDown = change.map(({ datetime, close }) => {
-    if (close < 0) return { datetime, close };
+  const loss = change.map(({ datetime, close }) => {
+    if (close < 0) return { datetime, close: Math.abs(close) };
     return { datetime, close: 0 };
   });
-  console.log(changeUp);
-  const emaUp = ema2(changeUp, changeUp.length - 1, 14).slice(-1)[0].ema;
-  const emaDown = ema2(changeDown, changeDown.length - 1, 14).slice(-1)[0].ema;
-  console.log(emaUp, emaDown);
-  const RS = Math.abs(emaUp / emaDown);
+  const avgGain = rma(gain, gain.length);
+  const avgLoss = rma(loss, loss.length);
+
+  const RS = Math.abs(avgGain / avgLoss);
   const RSI = 100 - 100 / (1 + RS);
-  console.log(RS, data_arr[index].datetime);
-  return RSI;
+  // console.log(RS, data_arr[index].datetime);
+  console.log(avgGain, avgLoss, RS);
+  return { rsi: RSI, gain: avgGain, loss: avgLoss };
 };
+
 const addRsi = (data_arr, start_index) => {
-  for (i = start_index; i < data.length; i++) {}
+  console.log("start dato", data_arr[start_index].datetime);
+  let prevRS;
+  for (let i = start_index; i < data_arr.length; i++) {
+    const newRS = calcualteRSI(data_arr, i);
+    if (i === start_index) data_arr[i].rsi = newRS.rsi;
+    else {
+      const RS =
+        (13 * prevRS.gain + newRS.gain) / (13 * prevRS.loss + newRS.loss);
+      // const RSI = 100 - 100 / (1 + RS);
+      const RSI = newRS.rsi;
+      data_arr[i].rsi = RSI;
+      const ele = data_arr[i];
+      console.log(
+        ele.datetime,
+        RSI
+        // round(newRS.gain, 2),
+        // round(newRS.loss, 2)
+      );
+    }
+    prevRS = newRS;
+  }
 };
 
 const ema2 = (data_arr, start_index, n, smoothing = 2) => {
@@ -47,9 +90,10 @@ const ema2 = (data_arr, start_index, n, smoothing = 2) => {
         close: EMA_today,
         datetime: data_arr[i].datetime,
       }); //skal jeg ha med datoer?
-      if (i >= start_index) data_arr[i].ema = EMA_today;
+      data_arr[i].ema = EMA_today;
     }
   }
+  console.log(data_arr);
   return data_arr;
 };
 

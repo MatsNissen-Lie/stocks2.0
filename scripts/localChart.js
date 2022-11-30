@@ -1,4 +1,12 @@
-let datasets = {};
+let datasets = {
+  // label: lable,
+  // data: values,
+  // type: "line",
+  // borderColor: farge,
+  // backgroundColor: farge,
+  // pointRadius: type === "Portfolio" ? 2 : 1,
+  // pointHoverRadius: 1,
+};
 let relativ = false;
 const fargeKoder = {
   MSFT: "rgba(69, 179, 52, 0.8)",
@@ -123,6 +131,7 @@ const dataset_keys_to_change = (datasets, compare) => {
   });
   return keys;
 };
+
 const relativ_datasets = (datasets) => {
   compare = false; // avgjør om jeg skal ha prosent eller absolutt verdier.
   Object.keys(datasets).forEach((key) => {
@@ -190,7 +199,7 @@ const makeChart = async () => {
   // console.log(datasets)
   // console.log(datasets_list);
 
-  var myChart = new Chart(ctx, {
+  const myChart = new Chart(ctx, {
     type: "candlestick",
     data: {
       datasets: datasets_list,
