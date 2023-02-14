@@ -440,7 +440,8 @@ const get_and_save_new_data = async (keys, intervaller) => {
   for (let i = 0; i < intervaller.length; i++) {
     const intervall = intervaller[i];
     const startdato = finn_siste_lagrede_datoer(api_data, keys, intervall)[0];
-    let sluttDato = new Date().toISOString().split("T")[0];
+    const sluttDato = new Date().toISOString().split("T")[0];
+    // const sluttDato = "2023-02-04";
 
     if (startdato === undefined)
       console.log("finner ikke start dato linje 441.", startdato);
@@ -505,8 +506,8 @@ const checkForStockSplit = (data) => {
 
 const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
 const ufocuz = ["SPX", "AMZN"]; //,'BTC/USD', vix
-const valgte_intervaller = ["1day", "1min", "1week"];
-// const valgte_intervaller =  ['1min']
+// const valgte_intervaller = ["1day", "1min", "1week"];
+const valgte_intervaller = ["1min"];
 // const valgte_intervaller =  ['1day']
 
 let api_data = {};
@@ -525,7 +526,7 @@ const kjørrr = async () => {
   // const new_data_found = await get_historical_data(focuz, '1week', '2006-01-01')
   //   const new_data_found = await get_historical_data(focuz, "1min", "2020-03-25");
   const ask = prompt("Press enter to get new data? y/n");
-  if( ask !== "" && ask !== "y") return;
+  if (ask !== "" && ask !== "y") return;
   const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
   // checkForStockSplit(api_data, valgte_intervaller);
 
