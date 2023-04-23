@@ -441,7 +441,7 @@ const get_and_save_new_data = async (keys, intervaller) => {
     const intervall = intervaller[i];
     const startdato = finn_siste_lagrede_datoer(api_data, keys, intervall)[0];
     const sluttDato = new Date().toISOString().split("T")[0];
-    // const sluttDato = "2023-02-04";
+    // const sluttDato = "2023-04-17"; //her kan du endre datoen dersom det ikke er overlapp mellom datasettet som hentes og den som er lagret.
 
     if (startdato === undefined)
       console.log("finner ikke start dato linje 441.", startdato);
@@ -505,26 +505,12 @@ const checkForStockSplit = (data) => {
 };
 
 const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
-const ufocuz = ["SPX", "AMZN"]; //,'BTC/USD', vix
-// const valgte_intervaller = ["1day", "1min", "1week"];
-const valgte_intervaller = ["1min"];
-// const valgte_intervaller =  ['1day']
+const ufocuz = ["SPX", "AMZN"];
+const valgte_intervaller = ["1day", "1min", "1week"];
 
 let api_data = {};
 const kjørrr = async () => {
   api_data = retrieveData(focuz, valgte_intervaller);
-  // const data = await hentData(['NDX'], '2022-03-25', '2022-03-30', '1min')
-  // const val = data['NDX']['1min']
-  // console.log(val)
-  // const val = api_data['NDX']['1min']
-  // const index = datetime_to_index(val, '2022-03-25 15:58:00')
-  // console.log(val.slice(index,val.length))
-  // val.splice(index+1)
-  // console.log(val.slice(-1)[0])
-
-  // const new_data_found = await get_historical_data(focuz, '1day', '2007-01-01')
-  // const new_data_found = await get_historical_data(focuz, '1week', '2006-01-01')
-  //   const new_data_found = await get_historical_data(focuz, "1min", "2020-03-25");
   const ask = prompt("Press enter to get new data? y/n");
   if (ask !== "" && ask !== "y") return;
   const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
@@ -534,7 +520,6 @@ const kjørrr = async () => {
     setTimeout(() => {
       logTing(api_data);
     }, 100);
-  // logTing(api_data);
 };
 kjørrr();
 
