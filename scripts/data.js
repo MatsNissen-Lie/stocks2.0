@@ -435,16 +435,19 @@ const get_historical_data = async (aksjeSymboler, dataIntervall, stoppDato) => {
   return ny_data_funnet;
 };
 
-const get_and_save_new_data = async (keys, intervaller) => {
+const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
+  callCount++;
   let new_data_found = false;
   for (let i = 0; i < intervaller.length; i++) {
     const intervall = intervaller[i];
     const startdato = finn_siste_lagrede_datoer(api_data, keys, intervall)[0];
-    const sluttDato = new Date().toISOString().split("T")[0];
+    const sluttDato = addWorkDays(new Date(startdato), 12);
     // const sluttDato = "2023-04-17"; //her kan du endre datoen dersom det ikke er overlapp mellom datasettet som hentes og den som er lagret.
 
     if (startdato === undefined)
-      console.log("finner ikke start dato linje 441.", startdato);
+      throw new Error(
+        "Finner ikke startdato for intervall linje 441 " + startdato
+      );
 
     const data = await hentData(keys, startdato, sluttDato, intervall);
     // console.log(keys, startdato, sluttDato)
@@ -455,7 +458,9 @@ const get_and_save_new_data = async (keys, intervaller) => {
       new_data_found = true;
     } else console.log("Ingen ny data for intervall: " + intervall);
   }
-  return new_data_found;
+  if (new_data_found) get_and_save_new_data(keys, intervaller);
+
+  return new_data_found || callCount > 1;
 };
 
 const checkForStockSplit = (data) => {
@@ -508,12 +513,17 @@ const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
 const ufocuz = ["SPX", "AMZN"];
 const valgte_intervaller = ["1day", "1min", "1week"];
 
+const get_and_save_new_data_while = async () => {
+  const hei = 1;
+  return;
+};
+
 let api_data = {};
 const kjørrr = async () => {
   api_data = retrieveData(focuz, valgte_intervaller);
   const ask = prompt("Press enter to get new data? y/n");
   if (ask !== "" && ask !== "y") return;
-  const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
+  const new_data_found = await get_and_save_new_data(focuz, ["1min"]);
   // checkForStockSplit(api_data, valgte_intervaller);
 
   if (new_data_found)
@@ -521,6 +531,7 @@ const kjørrr = async () => {
       logTing(api_data);
     }, 100);
 };
+
 kjørrr();
 
 const delete_last_day = () => {
@@ -535,3 +546,28 @@ const delete_to_date = () => {
   const val = data["NDX"]["1min"];
   const index = datetime_to_index(val, "2022-03-31 15:59:00");
 };
+
+function addWorkDays(startDate, numDays) {
+  // Check if the startDate is a valid date
+  if (!(startDate instanceof Date) || isNaN(startDate.getTime())) {
+    throw new Error("Invalid start date. Please provide a valid date.");
+  }
+  // Check if numDays is a positive integer
+  if (!Number.isInteger(numDays) || numDays <= 0) {
+    throw new Error(
+      "Invalid number of days. Please provide a positive integer."
+    );
+  }
+  // Calculate the end date by adding numDays to the startDate
+  let endDate = new Date(startDate.getTime());
+  let count = 0;
+  while (count < numDays) {
+    endDate.setDate(endDate.getDate() + 1);
+    if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
+      // Sunday = 0, Saturday = 6
+      count++;
+    }
+  }
+
+  return endDate.toISOString().split("T")[0];
+}
