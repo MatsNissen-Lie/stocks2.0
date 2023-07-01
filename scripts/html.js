@@ -228,7 +228,7 @@ const vis_index_trad = async (dayTrad = false, tilnærming = false) => {
   const start_date = chart_data.values[start_index].datetime;
   const end_date = chart_data.values.slice(-1)[0].datetime;
   const data = chart_data.values;
-  if (chart_data.meta.symbol === "NDX" && !dayTrad) return vis_algo(true);
+  // if (chart_data.meta.symbol === "NDX" && !dayTrad) return vis_algo(true);
   if (start_date < "2020-03-25")
     return alert(
       "Kan ikke beregne index trad. Det finnes ikke minutt data før 2020-03-25."
@@ -249,6 +249,7 @@ const vis_index_trad = async (dayTrad = false, tilnærming = false) => {
   );
   const day_values_index = day_data_index["NDX"].values;
   const min_values_index = min_data_index["NDX"].values;
+
   let resultat;
   console.log(day_data_index, min_data_index);
 
