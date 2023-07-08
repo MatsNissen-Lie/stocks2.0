@@ -281,14 +281,13 @@ const check_for_new_data = (data, dataIntervall) => {
         console.log("lacal data starter", lagret_data[0].datetime);
         return;
       }
-      new_data_found = true;
       const index = datetime_to_index(
         hentet_data,
         lagret_data[0].datetime,
         false,
         false
       );
-      const ny_data = hentet_data.slice(0, index);
+      new_data_found = true;
       console.log(
         dataIntervall,
         key,
@@ -301,7 +300,7 @@ const check_for_new_data = (data, dataIntervall) => {
       hentet_data[hentet_data.length - 1].datetime >=
       lagret_data[lagret_data.length - 1].datetime
     ) {
-      // add ny data
+      // add ny data etter
       // console.log(key, hentet_data[hentet_data.length-1])
       if (
         hentet_data[0].datetime > lagret_data[lagret_data.length - 1].datetime
@@ -318,8 +317,6 @@ const check_for_new_data = (data, dataIntervall) => {
         console.log("ny data starter", lagret_data[0].datetime);
         return;
       }
-
-      new_data_found = true;
       const index = datetime_to_index(
         hentet_data,
         lagret_data[lagret_data.length - 1].datetime,
@@ -327,6 +324,11 @@ const check_for_new_data = (data, dataIntervall) => {
         true
       );
       const ny_data = hentet_data.slice(index, hentet_data.length); // starter på index og henter én overlappende dato
+      if (ny_data.length === 1) {
+        console.log("Ingen ny data likevel. Bytter kun siste verdier", key);
+        return false;
+      }
+      new_data_found = true;
       console.log(
         dataIntervall,
         key,
@@ -442,6 +444,8 @@ const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
     const intervall = intervaller[i];
     const startdato = finn_siste_lagrede_datoer(api_data, keys, intervall)[0];
     const sluttDato = addWorkDays(new Date(startdato), 12);
+    console.log("Siste lagrede dato for", intervall, "er", startdato);
+    console.log("Henter data til", sluttDato);
     // const sluttDato = "2023-04-17"; //her kan du endre datoen dersom det ikke er overlapp mellom datasettet som hentes og den som er lagret.
 
     if (startdato === undefined)
@@ -513,17 +517,12 @@ const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
 const ufocuz = ["SPX", "AMZN"];
 const valgte_intervaller = ["1day", "1min", "1week"];
 
-const get_and_save_new_data_while = async () => {
-  const hei = 1;
-  return;
-};
-
 let api_data = {};
 const kjørrr = async () => {
   api_data = retrieveData(focuz, valgte_intervaller);
   const ask = prompt("Press enter to get new data? y/n");
   if (ask !== "" && ask !== "y") return;
-  const new_data_found = await get_and_save_new_data(focuz, ["1min"]);
+  const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
   // checkForStockSplit(api_data, valgte_intervaller);
 
   if (new_data_found)
