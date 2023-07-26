@@ -444,7 +444,10 @@ const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
     const intervall = intervaller[i];
     const startdato = finn_siste_lagrede_datoer(api_data, keys, intervall)[0];
 
-    const sluttDato = addWorkDays(new Date(startdato), intervaller);
+    const sluttDato = findEndDateWithOverlappingData(
+      new Date(startdato),
+      intervaller
+    );
 
     console.log("Siste lagrede dato for", intervall, "er", startdato);
     console.log("Henter data til", sluttDato);
@@ -548,7 +551,7 @@ const delete_to_date = () => {
   const index = datetime_to_index(val, "2022-03-31 15:59:00");
 };
 
-function addWorkDays(startDate, intervaller) {
+function findEndDateWithOverlappingData(startDate, intervaller) {
   // Check if the startDate is a valid date
   if (!(startDate instanceof Date) || isNaN(startDate.getTime())) {
     throw new Error("Invalid start date. Please provide a valid date.");
