@@ -556,18 +556,12 @@ function findEndDateWithOverlappingData(startDate, intervaller) {
   if (!(startDate instanceof Date) || isNaN(startDate.getTime())) {
     throw new Error("Invalid start date. Please provide a valid date.");
   }
-  // Check if numDays is a positive integer
-  if (!Number.isInteger(numDays) || numDays <= 0) {
-    throw new Error(
-      "Invalid number of days. Please provide a positive integer."
-    );
-  }
-  function findNumberOfDaysToAdd() {
-    if (intervall.join("").inclueds("min")) return 12;
-    else if (intervall.join("").inclueds("day")) return 300;
-    else return 300 * 7;
-  }
-  const numDays = findNumberOfDaysToAdd();
+  let numDays = 300 * 7;
+  intervaller.forEach((intervall) => {
+    if (intervall === "1min") numDays = 12;
+    else if (intervall === "1day" && numDays !== 12) numDays = 300;
+  });
+
   // Calculate the end date by adding numDays to the startDate
   let endDate = new Date(startDate.getTime());
   let count = 0;
