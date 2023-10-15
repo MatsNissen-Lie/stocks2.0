@@ -324,10 +324,14 @@ const check_for_new_data = (data, dataIntervall) => {
         true
       );
       const ny_data = hentet_data.slice(index, hentet_data.length); // starter på index og henter én overlappende dato
-      if (ny_data.length === 1) {
-        console.log("Ingen ny data likevel. Bytter kun siste verdier", key);
+
+      const last_date_close = lagret_data[lagret_data.length - 1].close;
+      const last_new_date_close = ny_data[ny_data.length - 1].close;
+      if (ny_data.length === 1 && last_date_close === last_new_date_close) {
+        console.log("Ingen ny data likevel. Bytter ikke siste verdier", key);
         return false;
       }
+
       new_data_found = true;
       console.log(
         dataIntervall,
@@ -467,7 +471,8 @@ const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
       new_data_found = true;
     } else console.log("Ingen ny data for intervall: " + intervall);
   }
-  if (new_data_found) get_and_save_new_data(keys, intervaller);
+  if (new_data_found)
+    get_and_save_new_data(keys, intervaller, (callCount = callCount));
 
   return new_data_found || callCount > 1;
 };
@@ -520,6 +525,7 @@ const checkForStockSplit = (data) => {
 
 const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
 const ufocuz = ["SPX", "AMZN"];
+
 const valgte_intervaller = ["1day", "1min", "1week"];
 
 let api_data = {};
