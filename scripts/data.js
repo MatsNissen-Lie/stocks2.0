@@ -327,7 +327,10 @@ const check_for_new_data = (data, dataIntervall) => {
 
       const last_date_close = lagret_data[lagret_data.length - 1].close;
       const last_new_date_close = ny_data[ny_data.length - 1].close;
-      if (ny_data.length === 1 && last_date_close === last_new_date_close) {
+      if (
+        (ny_data.length === 1 && last_date_close === last_new_date_close) ||
+        (ny_data.length === 1 && markedIsOpen())
+      ) {
         console.log("Ingen ny data likevel. Bytter ikke siste verdier", key);
         return false;
       }
