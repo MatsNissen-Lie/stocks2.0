@@ -535,9 +535,9 @@ const kjørrr = async () => {
   const ask = prompt("Press enter to get new data? y/n");
   if (ask !== "" && ask !== "y") return;
 
-  // const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
+  const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
   // checkForStockSplit(api_data, valgte_intervaller);
-  new_data_found = await get_historical_data(focuz, "1week", "2023-10-20");
+  // new_data_found = await get_historical_data(focuz, "1week", "2023-10-20");
 
   if (new_data_found)
     setTimeout(() => {
