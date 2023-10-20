@@ -1,7 +1,5 @@
 //globale funksjoner
 const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
-const markedOpeningTime = 14;
-const markedClosingTime = 21;
 const smart_trending_comparison = ["AAPL", "MSFT", "GOOGL", "NDX", "TSLA"];
 const trending_comparison = ["AAPL", "MSFT", "GOOGL"];
 // const trending_comparison = ['AAPL', 'MSFT', 'GOOGL', 'TSLA']
@@ -99,6 +97,10 @@ const grouo_dayTrads = (trads) => {
 };
 
 const markedIsOpen = () => {
+  //US
+  const markedOpeningTime = 14;
+  const markedClosingTime = 21;
+
   let marketOpen = false;
   const day = new Date().getDay();
   const timer = new Date().getHours();
