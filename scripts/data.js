@@ -389,7 +389,7 @@ const get_historical_data = async (aksjeSymboler, dataIntervall, stoppDato) => {
   // console.log(sluttDato)
   if (sluttDato.length != aksjeSymboler.length) {
     //hvis markedet er åpent vil jeg ikke lagre en ufulstedig dagsdata på macen. Linje under.
-    sluttDato = "2022-09-15"; //new Date().toISOString().split('T')[0]
+    sluttDato = new Date().toISOString().split("T")[0];
   } else sluttDato = sluttDato[sluttDato.length - 1];
 
   console.log("Historisk aksjedata: henter fra", sluttDato);
@@ -531,10 +531,13 @@ const valgte_intervaller = ["1day", "1min", "1week"];
 let api_data = {};
 const kjørrr = async () => {
   api_data = retrieveData(focuz, valgte_intervaller);
+  // console.log("api_data", api_data);
   const ask = prompt("Press enter to get new data? y/n");
   if (ask !== "" && ask !== "y") return;
-  const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
+
+  // const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
   // checkForStockSplit(api_data, valgte_intervaller);
+  new_data_found = await get_historical_data(focuz, "1week", "2023-10-20");
 
   if (new_data_found)
     setTimeout(() => {
