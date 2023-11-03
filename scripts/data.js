@@ -97,11 +97,11 @@ const saveData = (data, intervall, keys = []) => {
       console.error(
         err
           ? err
-          : intervall + " " + key + " data sucsessfully written to file!"
+          : intervall + " " + key + " data sucsessfully written to file!\n"
       )
     );
   });
-  console.log("Data lagret.");
+  console.log("Data lagret.\n");
 };
 
 const get_stored_keys = () => {
@@ -529,7 +529,7 @@ const checkForStockSplit = (data) => {
 const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
 const ufocuz = ["SPX", "AMZN"];
 
-const valgte_intervaller = ["1day", "1min", "1week"];
+const valgte_intervaller = ["1min", "1day", "1week"];
 
 let api_data = {};
 const kjørrr = async () => {
