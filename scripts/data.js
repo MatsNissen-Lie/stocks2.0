@@ -332,9 +332,8 @@ const check_for_new_data = (data, dataIntervall) => {
       const last_new_date_close = ny_data[ny_data.length - 1].close;
       if (
         (ny_data.length === 1 && last_date_close === last_new_date_close) ||
-        (ny_data.length === 1 && markedIsOpen())(
-          ny_data.length < 10 && markedIsOpen() && dataIntervall === "1min"
-        )
+        (ny_data.length === 1 && markedIsOpen()) ||
+        (ny_data.length < 10 && markedIsOpen() && dataIntervall === "1min")
       ) {
         console.log(
           "Ingen ny data likevel. Bytter ikke siste verdier",
