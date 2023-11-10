@@ -1,3 +1,4 @@
+const markedIsOpen = require("./globalefunksjoner");
 //globale funksjoner
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -265,7 +266,7 @@ const check_for_new_data = (data, dataIntervall) => {
     const hentet_data = data[key][dataIntervall];
     const lagret_data = api_data[key][dataIntervall];
     if (hentet_data[0].datetime < lagret_data[0].datetime) {
-      // add før.
+      // –––––––––––––––––––––––––––– add før. ––––––––––––––––––––––––––––
       if (
         hentet_data[hentet_data.length - 1].datetime < lagret_data[0].datetime
       ) {
@@ -300,8 +301,7 @@ const check_for_new_data = (data, dataIntervall) => {
       hentet_data[hentet_data.length - 1].datetime >=
       lagret_data[lagret_data.length - 1].datetime
     ) {
-      // add ny data etter
-      // console.log(key, hentet_data[hentet_data.length-1])
+      // –––––––––––––––––––––––––––– add ny data etter ––––––––––––––––––––––––––––
       if (
         hentet_data[0].datetime > lagret_data[lagret_data.length - 1].datetime
       ) {
@@ -325,13 +325,22 @@ const check_for_new_data = (data, dataIntervall) => {
       );
       const ny_data = hentet_data.slice(index, hentet_data.length); // starter på index og henter én overlappende dato
 
+      console.log("nydata", ny_data);
+      console.log("markedIsOpen", markedIsOpen());
+
       const last_date_close = lagret_data[lagret_data.length - 1].close;
       const last_new_date_close = ny_data[ny_data.length - 1].close;
       if (
         (ny_data.length === 1 && last_date_close === last_new_date_close) ||
-        (ny_data.length === 1 && markedIsOpen())
+        (ny_data.length === 1 && markedIsOpen())(
+          ny_data.length < 10 && markedIsOpen() && dataIntervall === "1min"
+        )
       ) {
-        console.log("Ingen ny data likevel. Bytter ikke siste verdier", key);
+        console.log(
+          "Ingen ny data likevel. Bytter ikke siste verdier",
+          key,
+          dataIntervall
+        );
         return false;
       }
 
@@ -455,7 +464,10 @@ const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
       new Date(startdato),
       intervaller
     );
-
+    console.log(
+      `–––––––––––––––––––––––––––––––––${intervall}: fra ${startdato} til ${sluttDato} –––––––––––––––––––––––––––––––––`
+      // "––––––––––––––––––––––––––––––––– END –––––––––––––––––––––––––––––––––"
+    );
     console.log("Siste lagrede dato for", intervall, "er", startdato);
     console.log("Henter data til", sluttDato);
     // const sluttDato = "2023-04-17"; //her kan du endre datoen dersom det ikke er overlapp mellom datasettet som hentes og den som er lagret.
@@ -473,6 +485,9 @@ const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
       saveData(api_data, intervall);
       new_data_found = true;
     } else console.log("Ingen ny data for intervall: " + intervall);
+    console.log(
+      "––––––––––––––––––––––––––––––––– END –––––––––––––––––––––––––––––––––"
+    );
   }
   if (new_data_found)
     get_and_save_new_data(keys, intervaller, (callCount = callCount));
