@@ -7,9 +7,6 @@
 // }
 // test_min_dato()
 
-const markedIsOpen = require("./globalefunksjoner");
-console.log(markedIsOpen());
-
 const parallell = async () => {
   const data = await hent_data(focuz, "2021-10-01", "2022-01-01", "1min", 250);
   // const data = await hent_data(['TSLA'], '2010-01-01', '2022-01-01', '1day', 250)
