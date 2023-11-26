@@ -325,8 +325,8 @@ const check_for_new_data = (data, dataIntervall) => {
       );
       const ny_data = hentet_data.slice(index, hentet_data.length); // starter på index og henter én overlappende dato
 
-      console.log("nydata", ny_data);
-      console.log("markedIsOpen", markedIsOpen());
+      // console.log("nydata", ny_data);
+      // console.log("markedIsOpen", markedIsOpen());
 
       const last_date_close = lagret_data[lagret_data.length - 1].close;
       const last_new_date_close = ny_data[ny_data.length - 1].close;
