@@ -257,6 +257,7 @@ const check_for_new_data = (data, dataIntervall) => {
       console.log(key, "ny aksje lagt til");
     }
     intervall_exisits = dataIntervall in api_data[key];
+
     if (!intervall_exisits) {
       //hvis jeg nytt intervall blir lagt til
       new_data_found = true;
@@ -330,6 +331,10 @@ const check_for_new_data = (data, dataIntervall) => {
 
       const last_date_close = lagret_data[lagret_data.length - 1].close;
       const last_new_date_close = ny_data[ny_data.length - 1].close;
+
+      console.log("ny data lengde ", ny_data.length);
+      console.log("markedIsOpen", markedIsOpen());
+      console.log("dataIntervall", dataIntervall);
       if (
         (ny_data.length === 1 && last_date_close === last_new_date_close) ||
         (ny_data.length === 1 && markedIsOpen()) ||
@@ -481,7 +486,6 @@ const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
     // console.log(data['NDX']['1day'].slice(-1)[0])
     if (check_for_new_data(data, intervall)) {
       console.log("Ny data lagret til", sluttDato);
-      saveData(api_data, intervall);
       new_data_found = true;
     } else console.log("Ingen ny data for intervall: " + intervall);
     console.log(
@@ -490,6 +494,9 @@ const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
   }
   if (new_data_found)
     get_and_save_new_data(keys, intervaller, (callCount = callCount));
+  else if (callCount > 1 && new_data_found === false)
+    // Når all mulig data er hentet lagres den til fil.
+    saveData(api_data, intervall);
 
   return new_data_found || callCount > 1;
 };
