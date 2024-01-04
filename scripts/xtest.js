@@ -1,3 +1,6 @@
+const markedIsOpen = require("./globalefunksjoner");
+
+console.log("markedIsOpen", markedIsOpen());
 // const test_min_dato = async () =>{
 //     const data = await read_file('TSLA')
 //     const min = data['1day']

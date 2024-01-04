@@ -96,10 +96,22 @@ const grouo_dayTrads = (trads) => {
   return tradObj;
 };
 
+const isUSMarketOpen = () => {
+  const now = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "America/New_York" })
+  );
+  const totalMin = now.getUTCHours() * 60 + now.getUTCMinutes();
+  return (
+    9.5 * 60 <= totalMin &&
+    totalMin < 16 * 60 &&
+    now.getUTCDay() >= 1 &&
+    now.getUTCDay() <= 5
+  );
+};
 const markedIsOpen = () => {
-  //US
-  const markedOpeningTime = 14;
-  const markedClosingTime = 21;
+  return isUSMarketOpen();
+  const markedOpeningTime = 15;
+  const markedClosingTime = 22;
 
   let marketOpen = false;
   const day = new Date().getDay();
