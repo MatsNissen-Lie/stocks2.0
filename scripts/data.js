@@ -102,7 +102,6 @@ const saveData = (data, intervall, keys = []) => {
       )
     );
   });
-  console.log("Data lagret.\n");
 };
 
 const get_stored_keys = () => {
@@ -325,16 +324,12 @@ const check_for_new_data = (data, dataIntervall) => {
         true
       );
       const ny_data = hentet_data.slice(index, hentet_data.length); // starter på index og henter én overlappende dato
-
-      // console.log("nydata", ny_data);
-      // console.log("markedIsOpen", markedIsOpen());
-
       const last_date_close = lagret_data[lagret_data.length - 1].close;
       const last_new_date_close = ny_data[ny_data.length - 1].close;
 
-      console.log("ny data lengde ", ny_data.length);
-      console.log("markedIsOpen", markedIsOpen());
-      console.log("dataIntervall", dataIntervall);
+      // console.log("ny data lengde ", ny_data.length);
+      // console.log("markedIsOpen", markedIsOpen());
+      // console.log("dataIntervall", dataIntervall);
       if (
         (ny_data.length === 1 && last_date_close === last_new_date_close) ||
         (ny_data.length === 1 && markedIsOpen()) ||
@@ -457,11 +452,18 @@ const get_historical_data = async (aksjeSymboler, dataIntervall, stoppDato) => {
   return ny_data_funnet;
 };
 
-const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
+const get_and_save_new_data = async (
+  keys,
+  intervaller,
+  recursion = true,
+  callCount = 0
+) => {
   callCount++;
   let new_data_found = false;
   for (let i = 0; i < intervaller.length; i++) {
     const intervall = intervaller[i];
+    // logTing(api_data, [intervall]);
+    // return false;
     const startdato = finn_siste_lagrede_datoer(api_data, keys, intervall)[0];
 
     const sluttDato = findEndDateWithOverlappingData(
@@ -469,7 +471,7 @@ const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
       intervaller
     );
     console.log(
-      `–––––––––––––––––––––––––––––––––${intervall}: fra ${startdato} til ${sluttDato} –––––––––––––––––––––––––––––––––`
+      `–––––––––––––––––––––––––––––––––${intervall}: fra ${startdato} til ${sluttDato} dypde ${callCount} –––––––––––––––––––––––––––––––––`
       // "––––––––––––––––––––––––––––––––– END –––––––––––––––––––––––––––––––––"
     );
     console.log("Siste lagrede dato for", intervall, "er", startdato);
@@ -481,6 +483,7 @@ const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
         "Finner ikke startdato for intervall linje 441 " + startdato
       );
 
+    console.log("Henter data for ", callCount, " gang for " + intervall);
     const data = await hentData(keys, startdato, sluttDato, intervall);
     // console.log(keys, startdato, sluttDato)
     // console.log(data['NDX']['1day'].slice(-1)[0])
@@ -492,12 +495,17 @@ const get_and_save_new_data = async (keys, intervaller, callCount = 0) => {
       "––––––––––––––––––––––––––––––––– END –––––––––––––––––––––––––––––––––"
     );
   }
-  if (new_data_found)
-    get_and_save_new_data(keys, intervaller, (callCount = callCount));
-  else if (callCount > 1 && new_data_found === false)
-    // Når all mulig data er hentet lagres den til fil.
-    saveData(api_data, intervall);
 
+  if (new_data_found && recursion)
+    await get_and_save_new_data(keys, intervaller, (callCount = callCount));
+  else if (
+    (callCount > 1 && new_data_found === false) ||
+    (!recursion && new_data_found)
+  )
+    // Når all mulig data er hentet lagres den til fil.
+    for (let i = 0; i < intervaller.length; i++) {
+      saveData(api_data, intervaller[i]);
+    }
   return new_data_found || callCount > 1;
 };
 
@@ -559,7 +567,11 @@ const kjørrr = async () => {
   const ask = prompt("Press enter to get new data? y/n");
   if (ask !== "" && ask !== "y") return;
 
-  const new_data_found = await get_and_save_new_data(focuz, valgte_intervaller);
+  const new_data_found = await get_and_save_new_data(
+    focuz,
+    valgte_intervaller,
+    (recursion = true)
+  );
   // checkForStockSplit(api_data, valgte_intervaller);
   // new_data_found = await get_historical_data(focuz, "1week", "2023-10-20");
 
