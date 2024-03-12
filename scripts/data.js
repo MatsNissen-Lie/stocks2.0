@@ -456,11 +456,13 @@ const get_and_save_new_data = async (
   keys,
   intervaller,
   recursion = true,
-  callCount = 0
+  callCount = 0,
+  apiCalls = 0
 ) => {
-  callCount++;
   let new_data_found = false;
+  callCount++;
   for (let i = 0; i < intervaller.length; i++) {
+    apiCalls++;
     const intervall = intervaller[i];
     // logTing(api_data, [intervall]);
     // return false;
@@ -471,7 +473,7 @@ const get_and_save_new_data = async (
       intervaller
     );
     console.log(
-      `–––––––––––––––––––––––––––––––––${intervall}: fra ${startdato} til ${sluttDato} dypde ${callCount} –––––––––––––––––––––––––––––––––`
+      `–––––––––––––––––––––––––––––––––${intervall}: fra ${startdato} til ${sluttDato} dybde ${callCount} apicalls ${apiCalls} –––––––––––––––––––––––––––––––––`
       // "––––––––––––––––––––––––––––––––– END –––––––––––––––––––––––––––––––––"
     );
     console.log("Siste lagrede dato for", intervall, "er", startdato);
@@ -497,15 +499,22 @@ const get_and_save_new_data = async (
   }
 
   if (new_data_found && recursion)
-    await get_and_save_new_data(keys, intervaller, (callCount = callCount));
+    await get_and_save_new_data(
+      keys,
+      intervaller,
+      recursion,
+      (callCount = callCount),
+      (apiCalls = apiCalls)
+    );
   else if (
     (callCount > 1 && new_data_found === false) ||
     (!recursion && new_data_found)
-  )
-    // Når all mulig data er hentet lagres den til fil.
+  ) {
     for (let i = 0; i < intervaller.length; i++) {
       saveData(api_data, intervaller[i]);
     }
+  }
+  // Når all mulig data er hentet lagres den til fil.
   return new_data_found || callCount > 1;
 };
 
