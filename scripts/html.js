@@ -251,7 +251,7 @@ const vis_index_trad = async (dayTrad = false, tilnærming = false) => {
   const min_values_index = min_data_index["NDX"].values;
 
   let resultat;
-  console.log(day_data_index, min_data_index);
+  // console.log(day_data_index, min_data_index);
 
   // const bollingerArr = bollingerBands(day_values_index, start_index, 20, 2);
   if (dayTrad)
