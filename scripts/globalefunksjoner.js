@@ -127,7 +127,7 @@ const markedIsOpen = () => {
     marketOpen = true;
   return marketOpen;
 };
-module.exports = markedIsOpen;
+// module.exports = markedIsOpen;
 
 // let list_of_dates = []
 // let timeStamp = new Date().getTime() - 30*24*3600*1000

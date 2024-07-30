@@ -1,4 +1,13 @@
+import {
+  saveData as newSaveData,
+  retrieveData as newRetrieveData,
+  get_stored_keys as newGetStoredKeys,
+} from "./storage.js";
+
+const USE_NEW = true;
+
 const markedIsOpen = require("./globalefunksjoner");
+
 //globale funksjoner
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -91,6 +100,10 @@ const fs = require("fs");
 const prompt = require("prompt-sync")();
 
 const saveData = (data, intervall, keys = []) => {
+  if (USE_NEW) {
+    return newSaveData(data, intervall, keys);
+  }
+
   if (!keys.length) keys = Object.keys(data);
   keys.forEach((key) => {
     const jsonData = JSON.stringify(data[key][intervall]);
@@ -105,6 +118,9 @@ const saveData = (data, intervall, keys = []) => {
 };
 
 const get_stored_keys = () => {
+  if (USE_NEW) {
+    return newGetStoredKeys();
+  }
   let files = fs.readdirSync("./filer/");
   for (let i = 0; i < files.length; i++) {
     files[i] = files[i].split(".")[0];
@@ -112,6 +128,10 @@ const get_stored_keys = () => {
   return files;
 };
 const retrieveData = (symboler = [], intervaller) => {
+  if (USE_NEW) {
+    return newRetrieveData(symboler, intervaller);
+  }
+
   if (symboler.length === 0) symboler = get_stored_keys();
   console.log("Henter data fra filer for", symboler);
   let data = {};
