@@ -1,8 +1,28 @@
 const read_file = async (key) => {
-  const response = await fetch(`/filer/${key}.json`);
-  const txt = await response.text();
-  const data = await JSON.parse(txt);
-  return data;
+  try {
+    // Fetch the file content from the server
+    const response = await fetch(`/filer_new/${key}.jsonl`);
+
+    // Check if the response is OK
+    if (!response.ok) {
+      throw new Error(`Failed to fetch file: ${response.statusText}`);
+    }
+
+    // Read the response text
+    const text = await response.text();
+
+    // Split the text by newlines to get individual JSON lines
+    const lines = text.trim().split("\n");
+
+    // Parse each JSON line into an object
+    const data = lines.map((line) => JSON.parse(line));
+
+    // Return the parsed data
+    return data;
+  } catch (error) {
+    console.error("Error reading file:", error);
+    return null;
+  }
 };
 // hent(focuz)
 

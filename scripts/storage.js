@@ -182,7 +182,7 @@ const get_old_data_and_store_it = () => {
         const lastObject = data[symbol][intervall].slice(-1)[0];
         new_data[symbol][intervall] = [JSON.parse(JSON.stringify(lastObject))];
         // change the close value to -1 to indicate that it is not up to date
-        data[symbol][intervall].slice(-1)[0].close = -1;
+        // data[symbol][intervall].slice(-1)[0].close = -1;
       }
     }
     return new_data;
@@ -196,11 +196,11 @@ const get_old_data_and_store_it = () => {
     saveData(data, intervaller[i]);
   }
 
-  for (let i = 0; i < intervaller.length; i++) {
-    saveData(last_objects, intervaller[i]);
-  }
+  // for (let i = 0; i < intervaller.length; i++) {
+  //   saveData(last_objects, intervaller[i]);
+  // }
 };
 
-// get_old_data_and_store_it();
+get_old_data_and_store_it();
 
-export { saveData, retrieveData, get_stored_keys };
+// export { saveData, retrieveData, get_stored_keys };
