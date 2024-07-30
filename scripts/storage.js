@@ -129,15 +129,22 @@ const get_stored_keys = () => {
 };
 const get_stored_keys_old = () => {
   let files = fs.readdirSync("./filer/");
-  for (let i = 0; i < files.length; i++) {
-    files[i] = files[i].split(".")[0];
-  }
-  return files;
+  let tickers = [];
+  files.forEach((file) => {
+    if (file !== ".DS_Store") {
+      // Ignore .DS_Store if it exists
+      let ticker = file.match(/[A-Z]+/)[0]; // Extract ticker symbol
+      if (!tickers.includes(ticker)) {
+        // Avoid duplicates
+        tickers.push(ticker);
+      }
+    }
+  });
+  return tickers;
 };
 
 const retrieveDataOld = (symboler = [], intervaller) => {
   if (symboler.length === 0) symboler = get_stored_keys_old();
-  console.log("Henter data fra filer for", symboler);
   let data = {};
   symboler.forEach((symbol) => {
     data[symbol] = {};
@@ -157,7 +164,7 @@ const retrieveDataOld = (symboler = [], intervaller) => {
 
 const get_old_data_and_store_it = () => {
   const intervaller = ["1min", "1day", "1week"];
-  let data = retrieveDataOld(["AAPL"], intervaller);
+  let data = retrieveDataOld([], intervaller);
 
   const copy_last_object = (data) => {
     let new_data = {};
