@@ -122,10 +122,18 @@ const retrieveData = (symboler = [], intervaller) => {
 
 const get_stored_keys = () => {
   let files = fs.readdirSync("./filer_new/");
-  for (let i = 0; i < files.length; i++) {
-    files[i] = files[i].split(".")[0];
-  }
-  return files;
+  let tickers = [];
+  files.forEach((file) => {
+    if (file !== ".DS_Store") {
+      // Ignore .DS_Store if it exists
+      let ticker = file.match(/[A-Z]+/)[0]; // Extract ticker symbol
+      if (!tickers.includes(ticker)) {
+        // Avoid duplicates
+        tickers.push(ticker);
+      }
+    }
+  });
+  return tickers;
 };
 const get_stored_keys_old = () => {
   let files = fs.readdirSync("./filer/");
@@ -193,4 +201,6 @@ const get_old_data_and_store_it = () => {
   }
 };
 
-get_old_data_and_store_it();
+// get_old_data_and_store_it();
+
+export { saveData, retrieveData, get_stored_keys };
