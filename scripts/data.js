@@ -1,8 +1,12 @@
-import {
-  saveData as newSaveData,
-  retrieveData as newRetrieveData,
-  get_stored_keys as newGetStoredKeys,
-} from "./storage.js";
+// import {
+//   saveData as newSaveData,
+//   retrieveData as newRetrieveData,
+//   get_stored_keys as newGetStoredKeys,
+// } from "./storage.js";
+
+const newSaveData = require("./storage").saveData;
+const newRetrieveData = require("./storage").retrieveData;
+const newGetStoredKeys = require("./storage").get_stored_keys;
 
 const USE_NEW = true;
 

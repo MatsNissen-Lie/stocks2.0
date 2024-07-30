@@ -106,7 +106,7 @@ const retrieveData = (symboler = [], intervaller) => {
     intervaller.forEach((intervall) => {
       try {
         const response = fs.readFileSync(
-          `filer/${intervall + symbol}.jsonl`,
+          `filer_new/${intervall + symbol}.jsonl`,
           "utf-8"
         );
         const lines = response.trim().split("\n");
@@ -201,6 +201,11 @@ const get_old_data_and_store_it = () => {
   // }
 };
 
-get_old_data_and_store_it();
+// get_old_data_and_store_it();
 
-// export { saveData, retrieveData, get_stored_keys };
+// storage.js
+module.exports = {
+  saveData,
+  retrieveData,
+  get_stored_keys,
+};
