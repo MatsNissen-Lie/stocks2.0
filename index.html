@@ -36,13 +36,13 @@
     <header>
       <section class="splitSec">
         <div class="inputDiv">
-          <label for="">Aksje</label>
+          <label for="">Stock</label>
           <select onchange="vis_aksje()" name="" id="selStock">
-            <option value="NDX">NDX</option>
+            <!-- <option value="NDX">NDX</option> -->
           </select>
         </div>
         <div class="inputDiv">
-          <label for="">Intervall</label>
+          <label for="">Interval</label>
           <select onchange="vis_aksje()" name="" id="intervall">
             <option value="1day">day</option>
             <option value="1min">min</option>
@@ -52,7 +52,7 @@
       </section>
       <section class="splitSec">
         <div class="inputDiv">
-          <label for="">Fra</label
+          <label for="">From</label
           ><input
             onchange="vis_aksje()"
             value="2021-09-14"
@@ -61,7 +61,7 @@
           />
         </div>
         <div class="inputDiv">
-          <label for="">Til </label
+          <label for="">To </label
           ><input
             onchange="vis_aksje()"
             value="2024-12-01"
@@ -101,15 +101,15 @@
         <!-- <h3>Algoritmer</h3> -->
         <section id="secStrategier" class="splitSec strats">
           <button onclick="vis_index_trad(false, false)">Index Trad</button>
-          <button onclick="vis_mine_transaksjoner()">Mine transaksjoner</button>
+          <button onclick="vis_mine_transaksjoner()">My Transactions</button>
           <button
             onclick="vis_index_trad_multi(trending_comparison, 'NDX', picker_strats, picker_days)"
           >
             Trad trending stock
           </button>
 
-          <button onclick="vis_index_trad(true, true)">Index Daytrad</button>
-          <button onclick="vis_smart_algo()">Daytrad</button>
+          <button onclick="vis_index_trad(true, true)">Index Day Trad</button>
+          <button onclick="vis_smart_algo()">Day trad</button>
           <!-- <button onclick="vis_index_daytrad(false)">Index Daytrad</button> -->
           <!-- <button onclick="vis_index_trad()">index daytrad</button> -->
         </section>
