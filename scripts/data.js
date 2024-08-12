@@ -1,16 +1,13 @@
-// import {
-//   saveData as newSaveData,
-//   retrieveData as newRetrieveData,
-//   get_stored_keys as newGetStoredKeys,
-// } from "./storage.js";
+const fetch = require("node-fetch");
+const fs = require("fs");
+const prompt = require("prompt-sync")();
 
 const newSaveData = require("./storage").saveData;
 const newRetrieveData = require("./storage").retrieveData;
 const newGetStoredKeys = require("./storage").get_stored_keys;
 
-const USE_NEW = true;
-
 const markedIsOpen = require("./globalefunksjoner");
+const USE_NEW = true;
 
 //globale funksjoner
 function sleep(ms) {
@@ -99,9 +96,6 @@ const logTing = (data, intervaller = ["1week", "1day", "1min"]) => {
 };
 
 //start
-const fetch = require("node-fetch");
-const fs = require("fs");
-const prompt = require("prompt-sync")();
 
 const saveData = (data, intervall, keys = []) => {
   if (USE_NEW) {
@@ -380,7 +374,6 @@ const check_for_new_data = (data, dataIntervall) => {
       const old_data = lagret_data.slice(0, lagret_data.length - 1);
     }
   });
-  // if(new_data_found) saveData(api_data, dataIntervall), console.log(api_data)
   return new_data_found;
 };
 // check_for_new_data('', '1day')
@@ -476,7 +469,7 @@ const get_historical_data = async (aksjeSymboler, dataIntervall, stoppDato) => {
   return ny_data_funnet;
 };
 
-const get_and_save_new_data = async (
+const get_new_data = async (
   keys,
   intervaller,
   recursion = true,
@@ -523,7 +516,7 @@ const get_and_save_new_data = async (
   }
 
   if (new_data_found && recursion)
-    await get_and_save_new_data(
+    await get_new_data(
       keys,
       intervaller,
       recursion,
@@ -533,13 +526,9 @@ const get_and_save_new_data = async (
   else if (
     (callCount > 1 && new_data_found === false) ||
     (!recursion && new_data_found)
-  ) {
-    for (let i = 0; i < intervaller.length; i++) {
-      saveData(api_data, intervaller[i]);
-    }
-  }
-  // Når all mulig data er hentet lagres den til fil.
-  return new_data_found || callCount > 1;
+  )
+    // Når all mulig data er hentet lagres den til fil.
+    return new_data_found || callCount > 1;
 };
 
 const checkForStockSplit = (data) => {
@@ -589,9 +578,11 @@ const checkForStockSplit = (data) => {
 };
 
 const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
+const valgte_intervaller = ["1min", "1day", "1week"];
 const ufocuz = ["SPX", "AMZN"];
 
-const valgte_intervaller = ["1min", "1day", "1week"];
+// const focuz = ["AAPL"];
+// const valgte_intervaller = ["1week", "1day"];
 
 let api_data = {};
 const kjørrr = async () => {
@@ -600,11 +591,12 @@ const kjørrr = async () => {
   const ask = prompt("Press enter to get new data? y/n");
   if (ask !== "" && ask !== "y") return;
 
-  const new_data_found = await get_and_save_new_data(
+  const new_data_found = await get_new_data(
     focuz,
     valgte_intervaller,
     (recursion = true)
   );
+  if (new_data_found) saveData(api_data, valgte_intervaller);
   // checkForStockSplit(api_data, valgte_intervaller);
   // new_data_found = await get_historical_data(focuz, "1week", "2023-10-20");
 
