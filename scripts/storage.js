@@ -13,7 +13,6 @@ const saveData = (data, intervall, keys = []) => {
         .trim()
         .split("\n")
         .map((line) => JSON.parse(line));
-      console.log("existingData", existingData[existingData.length - 1]);
     } catch (err) {
       if (err.code !== "ENOENT") {
         console.log("Failed to save", intervall, key);
@@ -21,8 +20,6 @@ const saveData = (data, intervall, keys = []) => {
         return;
       }
     }
-    console.log("key", key);
-    console.log("intervall", intervall);
     const newData = data[key][intervall];
 
     // Find the index where the new data starts
@@ -48,10 +45,8 @@ const saveData = (data, intervall, keys = []) => {
       if (lastExistingEntry.datetime === correspondingNewEntry.datetime) {
         if (
           JSON.stringify(lastExistingEntry) !==
-            JSON.stringify(correspondingNewEntry) ||
-          true
+          JSON.stringify(correspondingNewEntry)
         ) {
-          console.log("updating last entry with", correspondingNewEntry);
           existingData[existingData.length - 1] = correspondingNewEntry;
           updatedLastEntry = true;
         }
@@ -65,12 +60,10 @@ const saveData = (data, intervall, keys = []) => {
     const nothingToAppend = appendedData === "" || appendedData.length === 0;
 
     if (updatedLastEntry) {
-      console.log("Updating last entry in", filePath);
       const lastEntryStr =
         JSON.stringify(existingData[existingData.length - 1]) + nothingToAppend
           ? "\n"
           : "";
-      console.log("lastEntryStr", lastEntryStr);
 
       fs.readFileSync(filePath, "utf8", (err, data) => {
         if (err) {
@@ -78,17 +71,15 @@ const saveData = (data, intervall, keys = []) => {
           return;
         }
         const lastNewlineIndex = data.lastIndexOf("\n", data.length - 2); // Find the position of the second last newline
-        console.log("lastNewlineIndex", lastNewlineIndex);
         const position = lastNewlineIndex + 1;
         const fileDescriptor = fs.openSync(filePath, "r+");
 
         // Create a buffer from the last entry string
         const buffer = Buffer.from(lastEntryStr, "utf8");
-        // console.log("buffer", buffer);
-        // Write the buffer to the file at the specified position
         fs.writeSync(fileDescriptor, buffer, 0, buffer.length, position);
         fs.closeSync(fileDescriptor);
       });
+      console.log("Updated last entry in", filePath);
     }
 
     // Append new entries to the file
@@ -96,6 +87,7 @@ const saveData = (data, intervall, keys = []) => {
       console.log("No new data to append after last entry in", filePath);
       return;
     }
+    console.log("Appending", newEntries.length, "new entries to", filePath);
     fs.appendFileSync(filePath, appendedData + "\n", (err) => {
       console.error(
         err
@@ -199,9 +191,6 @@ const get_old_data_and_store_it = () => {
     return new_data;
   };
   const last_objects = copy_last_object(data);
-
-  // console.log the data of the last appl object
-  // console.log(data["AAPL"]["1week"].slice(-1)[0]);
 
   for (let i = 0; i < intervaller.length; i++) {
     saveData(data, intervaller[i]);
