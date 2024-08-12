@@ -446,6 +446,23 @@ const comapre_stock = async () => {
   }
   makeChart();
 };
+function updateSecRes(indikatorer, relativAvkastning, indikatorer2) {
+  const secRes = document.querySelector("#secRes");
+  console.log(indikatorer, relativAvkastning, indikatorer2);
+  secRes.innerHTML = `
+      <p>Return ${round(indikatorer.avkastning, 2)}%</p>
+      <p>Performance ${round(relativAvkastning, 2)}%</p>
+      <p> Total return ${round(
+        ((indikatorer.avkastning / 100 + 1) * (relativAvkastning / 100 + 1) -
+          1) *
+          100,
+        2
+      )}%</p>
+      `;
+  // <p>Mean return ${round(indikatorer2.stigning, 4)}%</p>
+  // <p>Mean volitilitet ${round(indikatorer2.volitilitet, 4)}%</p>
+  // <p>Standardavvik ${round(indikatorer.SD_percent,2)}%</p>
+}
 
 const vis_resultater = (portfolio, data_values, start_index_data_values) => {
   const slutt_index_values = data_values.length - 1;
@@ -461,15 +478,9 @@ const vis_resultater = (portfolio, data_values, start_index_data_values) => {
   );
   const relativAvkastning =
     (portfolio.slice(-1)[0].close / data_values.slice(-1)[0].close - 1) * 100;
-  const secRes = document.querySelector("#secRes");
-  secRes.innerHTML = ` 
-        <p>Avkastning ${round(indikatorer.avkastning, 2)}%</p>
-        <p>Perfomance ${round(relativAvkastning, 2)}%</p>
-        <p>Mean Avkastning ${round(indikatorer2.stigning, 4)}%</p>
-        <p>Mean volitilitet ${round(indikatorer2.volitilitet, 4)}%</p>
-        `; // Standaravvik og Avkastning er ikke uavhengig av tid. Det er et problem? Hvis det ikke skal være et problem må jeg analysere alt over et fastbestemt intervall.
-  // <p>Standardavvik ${round(indikatorer.SD_percent,2)}%</p>
+  updateSecRes(indikatorer, relativAvkastning, indikatorer2);
 };
+
 const vis_resultater_relativ = (portfolio, data_values, start_index) => {
   const slutt_index_values = data_values.length - 1;
   const avkastning =
@@ -480,14 +491,7 @@ const vis_resultater_relativ = (portfolio, data_values, start_index) => {
     start_index,
     slutt_index_values
   );
-  const secRes = document.querySelector("#secRes");
-  secRes.innerHTML = ` 
-        <p>Avkastning ${round(avkastning, 2)}%</p>
-        <p>Perfomance ${round(Perfomance, 2)}%</p>
-        <p>Mean Avkastning ${round(indikatorer2.stigning, 4)}%</p>
-        <p>Mean volitilitet ${round(indikatorer2.volitilitet, 4)}%</p>
-        `; // Standaravvik og Avkastning er ikke uavhengig av tid. Det er et problem? Hvis det ikke skal være et problem må jeg analysere alt over et fastbestemt intervall.
-  // <p>Standardavvik ${round(indikatorer.SD_percent,2)}%</p>
+  updateSecRes(indikatorer, relativAvkastning, indikatorer2);
 };
 
 const tomorrow = async () => {

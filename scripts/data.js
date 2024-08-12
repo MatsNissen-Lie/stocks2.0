@@ -576,12 +576,12 @@ const checkForStockSplit = (data) => {
   });
 };
 
-// const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
-// const valgte_intervaller = ["1min", "1day", "1week"];
+const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
+const valgte_intervaller = ["1min", "1day", "1week"];
 const ufocuz = ["SPX", "AMZN"];
 
-const focuz = ["AAPL", "NDX"];
-const valgte_intervaller = ["1week", "1day"];
+// const focuz = ["AAPL", "NDX"];
+// const valgte_intervaller = ["1week", "1day"];
 
 let api_data = {};
 const kjørrr = async () => {
