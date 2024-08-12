@@ -21,7 +21,8 @@ const saveData = (data, intervall, keys = []) => {
         return;
       }
     }
-
+    console.log("key", key);
+    console.log("intervall", intervall);
     const newData = data[key][intervall];
 
     // Find the index where the new data starts
@@ -56,14 +57,22 @@ const saveData = (data, intervall, keys = []) => {
         }
       }
     }
+    // Append new data entries
+    const newEntries = newData.slice(startIndex);
+    const appendedData = newEntries
+      .map((entry) => JSON.stringify(entry))
+      .join("\n");
+    const nothingToAppend = appendedData === "" || appendedData.length === 0;
 
     if (updatedLastEntry) {
       console.log("Updating last entry in", filePath);
       const lastEntryStr =
-        JSON.stringify(existingData[existingData.length - 1]) + "\n";
+        JSON.stringify(existingData[existingData.length - 1]) + nothingToAppend
+          ? "\n"
+          : "";
       console.log("lastEntryStr", lastEntryStr);
 
-      fs.readFile(filePath, "utf8", (err, data) => {
+      fs.readFileSync(filePath, "utf8", (err, data) => {
         if (err) {
           console.error(err);
           return;
@@ -82,18 +91,12 @@ const saveData = (data, intervall, keys = []) => {
       });
     }
 
-    // Append new data entries
-    const newEntries = newData.slice(startIndex);
-    const appendedData = newEntries
-      .map((entry) => JSON.stringify(entry))
-      .join("\n");
-
     // Append new entries to the file
-    if (appendedData === "" || appendedData.length === 0) {
+    if (nothingToAppend) {
       console.log("No new data to append after last entry in", filePath);
       return;
     }
-    fs.appendFile(filePath, appendedData + "\n", (err) => {
+    fs.appendFileSync(filePath, appendedData + "\n", (err) => {
       console.error(
         err
           ? err
