@@ -99,6 +99,7 @@ const logTing = (data, intervaller = ["1week", "1day", "1min"]) => {
 
 const saveData = (data, intervall, keys = []) => {
   if (USE_NEW) {
+    console.log("sav new data");
     return newSaveData(data, intervall, keys);
   }
 
@@ -464,8 +465,6 @@ const get_historical_data = async (aksjeSymboler, dataIntervall, stoppDato) => {
     console.log("hentet til", sluttDato);
     if (sluttDato < stoppDato) getIT = false;
   }
-  // console.log(api_data)
-  if (ny_data_funnet) saveData(api_data, dataIntervall);
   return ny_data_funnet;
 };
 
@@ -516,19 +515,19 @@ const get_new_data = async (
   }
 
   if (new_data_found && recursion)
-    await get_new_data(
+    return await get_new_data(
       keys,
       intervaller,
       recursion,
       (callCount = callCount),
       (apiCalls = apiCalls)
     );
-  else if (
-    (callCount > 1 && new_data_found === false) ||
-    (!recursion && new_data_found)
-  )
-    // Når all mulig data er hentet lagres den til fil.
-    return new_data_found || callCount > 1;
+  // else if (
+  //   (callCount > 1 && new_data_found === false) ||
+  //   (!recursion && new_data_found)
+  // )
+  // Når all mulig data er hentet lagres den til fil.
+  return new_data_found || callCount > 1;
 };
 
 const checkForStockSplit = (data) => {
@@ -577,12 +576,12 @@ const checkForStockSplit = (data) => {
   });
 };
 
-const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
-const valgte_intervaller = ["1min", "1day", "1week"];
+// const focuz = ["AAPL", "MSFT", "NDX", "TSLA", "GOOGL"];
+// const valgte_intervaller = ["1min", "1day", "1week"];
 const ufocuz = ["SPX", "AMZN"];
 
-// const focuz = ["AAPL"];
-// const valgte_intervaller = ["1week", "1day"];
+const focuz = ["AAPL", "NDX"];
+const valgte_intervaller = ["1week", "1day"];
 
 let api_data = {};
 const kjørrr = async () => {
@@ -596,14 +595,19 @@ const kjørrr = async () => {
     valgte_intervaller,
     (recursion = true)
   );
-  if (new_data_found) saveData(api_data, valgte_intervaller);
-  // checkForStockSplit(api_data, valgte_intervaller);
-  // new_data_found = await get_historical_data(focuz, "1week", "2023-10-20");
 
-  if (new_data_found)
+  if (new_data_found) {
+    valgte_intervaller.forEach((intervall) => {
+      saveData(api_data, intervall);
+    });
+  }
+
+  if (new_data_found) {
+    console.log("Ny data lagret til fil");
     setTimeout(() => {
       logTing(api_data);
     }, 100);
+  }
 };
 
 kjørrr();
