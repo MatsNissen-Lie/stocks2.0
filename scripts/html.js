@@ -269,8 +269,9 @@ const vis_index_trad = async (dayTrad = false, tilnærming = false) => {
       start_index,
       NDX_strategisett.strats,
       NDX_strategisett.meta,
-      null
-      // bollingerArr
+      null,
+      [], //  bollingerArr
+      true
     );
   // const resultat = algo(day_values_index, start_index, NDX_strategisett.strats, NDX_strategisett.meta);
 
@@ -448,7 +449,6 @@ const comapre_stock = async () => {
 };
 function updateSecRes(indikatorer, relativAvkastning, indikatorer2) {
   const secRes = document.querySelector("#secRes");
-  console.log(indikatorer, relativAvkastning, indikatorer2);
   secRes.innerHTML = `
       <p>Return ${round(indikatorer.avkastning, 2)}%</p>
       <p>Performance ${round(relativAvkastning, 2)}%</p>
