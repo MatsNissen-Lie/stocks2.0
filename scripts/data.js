@@ -232,6 +232,7 @@ const hentData = async (
   let string_med_aksjesymboler = aksjeSymboler.join(",");
   const key = get_API_key();
   const apiURL = `https://api.twelvedata.com/time_series?symbol=${string_med_aksjesymboler}&interval=${dataIntervall}${startDato}&end_date=${sluttDato} 16:00:00&order=asc&apikey=${key}`;
+  console.log(apiURL);
   const response = await fetch(apiURL);
   const uformatertData = await response.json();
 
