@@ -516,7 +516,7 @@ const tomorrow_action = (
         "Husk at hvis markedet åpner over det tidligere topppunktet, blir det det nye referansepunktet."
       );
   } else {
-    console.log("Husk BB strats då");
+    console.log("Valgt strategi: ", strat.symbol);
     if (cooldown > 0 || (marketOpen && lastCool > 0)) {
       const toppunkt = ekstremalpunkter(
         data_values,
