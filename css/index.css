@@ -6,14 +6,12 @@ body {
   margin-top: 0;
   width: 100%;
   height: 10vh;
-  /* background-color: #181c24; */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .nav h1 {
   text-align: center;
-  /* color: #1b56b5; */
   font-size: 40px;
   padding: 0;
   margin: 0;
