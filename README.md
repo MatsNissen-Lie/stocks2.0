@@ -34,8 +34,8 @@ The buttons under the chart run these variants:
 
 | Button | What it runs |
 | --- | --- |
-| Index Trad | Gets signals from NDX daily data. Finds the exact minute of each trade in the 1-minute data. Applies the trades to the selected symbol. |
-| Index Day Trad | Same as Index Trad, but it executes on 1-minute bars and can trade more than once a day. |
+| Index Trad | Takes buy and sell signals from the NDX daily data. Finds the exact minute of each trade in the 1-minute data. Applies the trades to the selected symbol. |
+| Index Day Trad | Same as Index Trad, but it trades on 1-minute bars and can trade more than once a day. |
 | Day trad | Runs the strategy on the selected symbol. Also buys dips: it buys when the price opens 4% below, or falls 6% below, the lower Bollinger Band. |
 | Trad trending stock | Uses NDX signals. On each buy, it picks the stock among AAPL, MSFT and GOOGL with the best volatility-adjusted return over the last 24 trading days. |
 
@@ -43,7 +43,7 @@ The buttons under the chart run these variants:
 
 ## Data
 
-Prices come from the [Twelve Data](https://twelvedata.com/) time-series API. They are stored in `filer_new/` as JSON Lines, with one file for each interval and symbol (for example `1dayNDX.jsonl`).
+Prices come from the [Twelve Data](https://twelvedata.com/) time-series API. The repository stores them in `filer_new/` as JSON Lines, with one file for each interval and symbol (for example `1dayNDX.jsonl`).
 
 The repository includes data up to 11 September 2024:
 
@@ -68,7 +68,7 @@ python3 -m http.server 5501
 Open <http://localhost:5501>. The page loads NDX daily data from September 2021 and runs **Index Trad**.
 Change the symbol, interval or dates, then click a strategy button.
 
-Serve the files from the repository root. The page reads data with `fetch()`, so opening `index.html` directly from disk does not work.
+Serve the files from the repository root. The page reads data with `fetch()`. If you open `index.html` directly from disk, the page cannot read the data.
 
 ## Update the data
 
@@ -108,7 +108,7 @@ docs/screenshot.png         Screenshot for this README
 
 - I tuned the strategy parameters on the same history that the backtester replays. The results are in-sample.
 - The backtest does not include brokerage fees, spreads or taxes.
-- Known bugs, kept as they were when I stopped working on it:
+- Known bugs. I did not fix them after I stopped work on the project:
   - **Trad trending stock** stops with an error before it shows its result.
   - The grid search in `kombinatorikk.js` reads `.portfølje`, but the backtest returns `.portfolio`.
 - The **My Transactions** button showed my own brokerage trades. Those files are not in this repository, so the button shows nothing.
